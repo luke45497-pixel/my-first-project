@@ -149,7 +149,7 @@ export class DataSyncService {
 
             const { count: syncedMatchesCount, error: matchError } = await supabaseAdmin
                 .from('matches')
-                .upsert(matchesToUpsert as Match[], { onConflict: 'external_id, data_source' });
+                .upsert(matchesToUpsert, { onConflict: 'external_id, data_source' });
 
             if (matchError) throw new Error(`Failed to upsert matches: ${matchError.message}`);
 
