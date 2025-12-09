@@ -12,27 +12,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
-    const { syncType = 'full' } = body
+    const syncService = new DataSyncService();
+    const result = await syncService.syncAllData();
 
-    const syncService = new DataSyncService()
-
-    let result
-    switch (syncType) {
-      case 'full':
-        result = await syncService.syncAllData()
-        break
-      case 'live':
-        result = await syncService.syncLiveScores()
-        break
-      case 'supplemental':
-        result = await syncService.scrapeSupplementalData()
-        break
-      default:
+    if (!result.success) {
         return NextResponse.json(
-          { success: false, error: 'Invalid sync type. Use: full, live, or supplemental' },
-          { status: 400 }
-        )
+            { success: false, error: result.message, stats: result.stats },
+            { status: 500 }
+        );
     }
 
     return NextResponse.json({
