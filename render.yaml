@@ -1,0 +1,34 @@
+services:
+  # Type of service (web, pserv, worker)
+  - type: web
+    # Name of your service
+    name: football-predictions
+    # Environment variables for your service
+    env: node
+    # Build and start commands
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    # Directory to deploy from
+    rootDir: .
+    # Instance size (free tier)
+    plan: free
+    # Health check path
+    healthCheckPath: /api/health
+    # Auto-deploy on git push
+    autoDeploy: true
+    # Environment variables (these should be set in Render dashboard)
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false # Set this in Render dashboard
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false # Set this in Render dashboard
+      - key: SUPABASE_SERVICE_KEY
+        sync: false # Set this in Render dashboard
+      - key: PRIVATE_USERNAME
+        sync: false # Set this in Render dashboard
+      - key: PRIVATE_PASSWORD
+        sync: false # Set this in Render dashboard
+      - key: JWT_SECRET
+        sync: false # Set this in Render dashboard
